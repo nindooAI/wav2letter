@@ -110,6 +110,11 @@ void LexiconDecoder::decodeStep(const float* emissions, int T, int N) {
 
         // If we got a true word
         for (auto label : lex->labels) {
+          if (prevLex == lexicon_->getRoot() && prevHyp.token == n) {
+            // if previous token == word, don't repeat token
+            continue;
+          }
+
           if (!isLmToken_) {
             auto lmStateScorePair = lm_->score(prevHyp.lmState, label);
             lmState = lmStateScorePair.first;
